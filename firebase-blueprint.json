@@ -1,0 +1,43 @@
+{
+  "entities": {
+    "Expense": {
+      "title": "Expense",
+      "description": "An expense item representing money spent by a user in a specific category.",
+      "type": "object",
+      "properties": {
+        "amount": { "type": "number", "description": "The amount spent in numeric value" },
+        "category": { "type": "string", "description": "Category of transaction (e.g. Food, Travel)" },
+        "description": { "type": "string", "description": "Context and comments for the charge" },
+        "date": { "type": "string", "format": "date", "description": "Calendar date representation YYYY-MM-DD" },
+        "user": { "type": "string", "description": "The UID of the user who owns this resource" },
+        "createdAt": { "type": "string", "description": "Date-time string representing when this expense was logged" },
+        "updatedAt": { "type": "string", "description": "Date-time string representing when this expense was last revised" }
+      },
+      "required": ["amount", "category", "description", "date", "user"]
+    },
+    "Budget": {
+      "title": "Budget",
+      "description": "A spending limit on a particular category.",
+      "type": "object",
+      "properties": {
+        "category": { "type": "string", "description": "Category name being limited" },
+        "limit": { "type": "number", "description": "Numeric money limit" },
+        "rolloverEnabled": { "type": "boolean", "description": "Optional flag to carry over budget" },
+        "user": { "type": "string", "description": "The UID of the user who owns this budget resource" },
+        "createdAt": { "type": "string", "description": "Date-time string when budget was created" },
+        "updatedAt": { "type": "string", "description": "Date-time string when budget was last modified" }
+      },
+      "required": ["category", "limit", "user"]
+    }
+  },
+  "firestore": {
+    "expenses/{expenseId}": {
+      "schema": "Expense",
+      "description": "Expenses collection containing individual entries."
+    },
+    "budgets/{budgetId}": {
+      "schema": "Budget",
+      "description": "Budgets collection with user targets."
+    }
+  }
+}

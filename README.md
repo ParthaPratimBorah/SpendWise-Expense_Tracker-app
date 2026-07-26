@@ -1,269 +1,117 @@
 # SpendWise - Expense Tracker App
 
-A full-stack expense tracking application built with React, Node.js, Express, and MongoDB. Track your expenses, manage budgets, and visualize your spending with interactive charts.
-
-## ✨ Features
-
-- 🔐 **User Authentication** - Secure registration and login with JWT tokens
-- 💸 **Expense Management** - Add, edit, and delete expenses with categories
-- 📊 **Budget Tracking** - Set and monitor budgets by category
-- 📈 **Data Visualization** - Interactive charts showing spending patterns
-- 🎨 **Modern UI** - Beautiful, responsive design with Tailwind CSS
-- 🔒 **Protected Routes** - Secure API endpoints with authentication middleware
-
-## 🛠️ Tech Stack
-
-### Frontend
-- **React 18** - UI library
-- **TypeScript** - Type safety
-- **Vite** - Build tool and dev server
-- **Tailwind CSS** - Styling
-- **Axios** - HTTP client
-- **React Router** - Navigation
-- **Recharts** - Data visualization
-- **Framer Motion** - Animations
-
-### Backend
-- **Node.js** - Runtime environment
-- **Express 5** - Web framework
-- **MongoDB** - Database
-- **Mongoose** - ODM
-- **JWT** - Authentication
-- **bcryptjs** - Password hashing
-- **CORS** - Cross-origin resource sharing
-
-## 📋 Prerequisites
-
-Before you begin, ensure you have the following installed:
-- **Node.js** (v14 or higher)
-- **npm** or **yarn**
-- **MongoDB** (local installation or MongoDB Atlas account)
-
-## 🚀 Installation
-
-### 1. Clone the Repository
-
-```bash
-git clone https://github.com/ParthaPratimBorah/Expense_Tracker-app.git
-cd expenseAPP
-```
-
-### 2. Install Backend Dependencies
-
-```bash
-cd backend
-npm install
-```
-
-### 3. Install Frontend Dependencies
-
-```bash
-cd ../frontend_backup
-npm install
-```
-
-## ⚙️ Environment Setup
-
-### Backend Configuration
-
-Create a `.env` file in the `backend` folder:
-
-```env
-MONGO_URI=your_mongodb_connection_string
-JWT_SECRET=your_secret_key_here
-PORT=5001
-```
-
-**MongoDB Connection String Examples:**
-- **Local MongoDB**: `mongodb://localhost:27017/expenseapp`
-- **MongoDB Atlas**: `mongodb+srv://username:password@cluster.mongodb.net/expenseapp`
-
-**Generate JWT Secret:**
-```bash
-node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
-```
-
-## 🏃 Running the Application
-
-### Start Backend Server
-
-```bash
-cd backend
-npm run dev
-```
-
-**Expected Output:**
-```
-MongoDB Connected: 127.0.0.1
-Server started on port 5001
-```
-
-### Start Frontend Server
-
-Open a **new terminal** and run:
-
-```bash
-cd frontend_backup
-npm run dev
-```
-
-**Expected Output:**
-```
-VITE v6.x.x  ready in xxx ms
-
-➜  Local:   http://localhost:5173/
-```
-
-### Access the Application
-
-Open your browser and navigate to:
-- **Frontend**: `http://localhost:5173`
-- **Backend API**: `http://localhost:5001/api`
-
-## 🗄️ Checking the Database
-
-### MongoDB Compass (Recommended)
-
-1. Download and install [MongoDB Compass](https://www.mongodb.com/products/compass)
-2. Connect using your `MONGO_URI` from the `.env` file
-3. Browse collections: `users`, `expenses`, `budgets`
-
-
-## 📡 API Endpoints
-
-### Authentication
-
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| POST | `/api/auth/register` | Register new user | No |
-| POST | `/api/auth/login` | Login user | No |
-
-**Register Request:**
-```json
-{
-  "name": "John Doe",
-  "email": "john@example.com",
-  "password": "password123"
-}
-```
-
-**Login Request:**
-```json
-{
-  "email": "john@example.com",
-  "password": "password123"
-}
-```
-
-### Expenses
-
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| GET | `/api/expenses` | Get all expenses | Yes |
-| POST | `/api/expenses` | Create expense | Yes |
-| PUT | `/api/expenses/:id` | Update expense | Yes |
-| DELETE | `/api/expenses/:id` | Delete expense | Yes |
-
-**Create Expense Request:**
-```json
-{
-  "title": "Groceries",
-  "amount": 150.50,
-  "category": "Food",
-  "date": "2024-01-15"
-}
-```
-
-### Budgets
-
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| GET | `/api/budgets` | Get all budgets | Yes |
-| POST | `/api/budgets` | Create budget | Yes |
-| PUT | `/api/budgets/:id` | Update budget | Yes |
-| DELETE | `/api/budgets/:id` | Delete budget | Yes |
-
-**Create Budget Request:**
-```json
-{
-  "category": "Food",
-  "limit": 500
-}
-```
-
-## 📁 Project Structure
-
-```
-expenseAPP/
-├── backend/
-│   ├── config/
-│   │   └── db.js              # Database connection
-│   ├── controllers/
-│   │   ├── authController.js   # Authentication logic
-│   │   ├── expenseController.js
-│   │   └── budgetController.js
-│   ├── middleware/
-│   │   └── authMiddleware.js   # JWT authentication
-│   ├── models/
-│   │   ├── User.js
-│   │   ├── Expense.js
-│   │   └── Budget.js
-│   ├── routes/
-│   │   ├── authRoutes.js
-│   │   ├── expenseRoutes.js
-│   │   └── budgetRoutes.js
-│   ├── server.js               # Express server
-│   ├── package.json
-│   └── .env                    # Environment variables
-│
-└── frontend_backup/
-    ├── src/
-    │   ├── api/                # API calls
-    │   ├── components/         # React components
-    │   ├── pages/              # Page components
-    │   ├── hooks/              # Custom hooks
-    │   ├── providers/          # Context providers
-    │   ├── routes/             # Route configuration
-    │   └── types/              # TypeScript types
-    ├── package.json
-    └── vite.config.js
-```
-
-## 🧪 Testing the Connection
-
-### Quick Backend Test
-
-```bash
-# Test if backend is running
-curl http://localhost:5001/api/auth/login
-```
-
-### Test Registration
-
-```bash
-curl -X POST http://localhost:5001/api/auth/register \
-  -H "Content-Type: application/json" \
-  -d '{"name":"Test User","email":"test@example.com","password":"test123"}'
-```
-
-### Test Login
-
-```bash
-curl -X POST http://localhost:5001/api/auth/login \
-  -H "Content-Type: application/json" \
-  -d '{"email":"test@example.com","password":"test123"}'
-```
-
-## 👤 Author
-
-Partha Pratim Borah
-
-## 🙏 Acknowledgments
-
-- Built with React, Express, and MongoDB
-- UI components styled with Tailwind CSS
-- Charts powered by Recharts
+An ultra-secure, hyper-responsive, and visually distinctive neo-brutalist expense tracker and budget planner. **SpendWise** merges premium high-contrast visual design with robust multi-channel Firebase authentication, dual-persistence fallback storage, and real-time AI-powered financial advisory.
 
 ---
 
-**Happy Expense Tracking! 💰📊**
+## 🎨 Design Philosophy & Visual Concept
+
+Expense Vault breaks free from generic corporate dashboards by adopting a **Neo-Brutalist design language**:
+*   **Heavy Inks & Sharp Borders**: Thick solid black borders (`border-4 border-black`), sharp corners, and deep box shadows (`shadow-brutal-sm` / `shadow-brutal-lg`).
+*   **Aesthetic Typography Pairing**: Elegant, high-readability Display titles paired with clean code monospaces for telemetry, rates, and timestamps.
+*   **Polished Asymmetry**: Micro-animations, interactive hovering scales, retro ribbons, and skewed elements (like the **AI ASSIST** sticker badge) that catch the eye and elevate the user experience.
+
+---
+
+## 🚀 Key Features
+
+### 1. Multi-Channel Secure Authentication
+*   **Google Auth**: One-click OAuth login, fortified with domain-mismatch protections and custom iframe-escape guides.
+*   **Phone OTP Authentication**: Complete SMS-OTP login utilizing E.164 format filtering (+country code) and real-time numeric constraint checking.
+*   **Email & Password**: Standard credential authentication with custom error handling to replace cryptic Firebase system messages with actionable guidelines.
+
+### 2. Dual-Persistence & Real-Time Syncing
+*   **Real-time Firestore Sync**: Instant snapshot syncing for Expenses and Budgets, keeping lists updated immediately across multiple devices.
+*   **Strict Security & Format Controls**: Validated at the database level using granular Security Rules (`firestore.rules`) which verify user matching, entity sizes, and numeric boundaries.
+*   **Robust Local Storage Fallback**: Gracefully degrades to a client-side database if offline or when Firebase configuration is not present, allowing 100% offline-ready operations.
+*   **Long-Polling Core**: Built-in long-polling mode to safely circumvent cross-origin sandbox limitations inside containerized preview frames.
+
+### 3. Dynamic Visual Analytics
+*   **Neo-Brutal Bento Grid**: Dashboard modules showing month-to-date spending, top categories, and dynamic over-budget warn cards.
+*   **Interactive Visualizations**: Clean category-wise cost breakdowns, active progress bars, and custom color-coded status badges for instant readability.
+
+### 4. Smart AI Budget Analysis
+*   **On-Demand Financial Coach**: Analyzes active expense records and monthly budgets using Google Gemini models.
+*   **Contextual Advice**: Instantly generates recommendations on savings targets, category allocations, overspending hazards, and financial optimizations.
+
+---
+
+## 🏗️ Technical Architecture
+
+```
+                                  ┌───────────────────────────┐
+                                  │      React SPA Client     │
+                                  │    (TypeScript, Tailwind) │
+                                  └──────────────┬────────────┘
+                                                 │
+                        ┌────────────────────────┼────────────────────────┐
+                        │ (Auth / Write Requests)│                        │ (AI Prompt Sync)
+                        ▼                        ▼                        ▼
+           ┌────────────────────────┐  ┌────────────────────┐  ┌────────────────────┐
+           │ Firebase Auth Server   │  │ Firestore Database │  │ Server-Side Proxy  │
+           │ (Email, Phone, Google) │  │  (Real-time Sync)  │  │   (Gemini API)     │
+           └────────────────────────┘  └────────────────────┘  └────────────────────┘
+```
+
+### Frontend Stack
+*   **React & TypeScript**: Strong typing throughout the lifecycle of payloads, state actions, and custom authentication contexts.
+*   **Styling**: Modern utility-first CSS via Tailwind.
+*   **State Management**: Real-time listeners coupled with React context patterns (`AuthProvider` and `useRealtime` hook listeners).
+*   **Vector Library**: Clear icon telemetry from Lucide React.
+
+### Backend & Core Persistence
+*   **Cloud Firestore**: Highly structured collections (`expenses/{expenseId}` and `budgets/{budgetId}`) controlled by strict type schemas in `firebase-blueprint.json`.
+*   **Firestore Rules Engine**: Robust safety gates for operations (`isSignedIn`, `isValidId`, `isValidExpense`, `isValidBudget`).
+*   **Server-Side Proxy**: Standard Node/Express environment (`server.ts`) hosting secure API proxy routes to request Gemini recommendations without exposing secret tokens to client browsers.
+
+---
+
+## 📁 Directory Structure
+
+```text
+├── src/
+│   ├── components/            # Reusable UI Widgets & Features
+│   │   ├── features/          # Feature-level UI groups (expenses, budgets, AI analysis)
+│   │   ├── layout/            # Protected Routes and Navbar shells
+│   │   └── ui/                # Base aesthetic components (buttons, badges)
+│   ├── contexts/              # Core global UI & Application states
+│   ├── hooks/                 # Custom Hooks (useAuth, useRealtime listeners)
+│   ├── lib/                   # Module initiators (Firebase core setup, Firestore long-polling)
+│   ├── pages/                 # Full Page Layouts (Dashboard, Login, Budgets, Profile)
+│   ├── providers/             # React Provider wrapping trees
+│   ├── services/              # AI Service wrappers (Gemini integrations)
+│   └── types/                 # Shared TypeScript models and interfaces
+├── firebase-applet-config.json # Connection tokens for Firebase Products
+├── firebase-blueprint.json    # Strict JSON-schema description of database entities
+├── firestore.rules            # Security rules ensuring cloud data safety
+├── metadata.json              # Application metadata and descriptors
+└── package.json               # Package manifests and runner definitions
+```
+
+---
+
+## ⚙️ Running & Building
+
+### 1. Developer Setup
+Install initial dependencies to prepare the local workspace modules:
+```bash
+npm install
+```
+
+### 2. Development Execution
+Launch the local Hot Module Replacement development server:
+```bash
+npm run dev
+```
+
+### 3. Production Build
+Compile optimized static files for deployment:
+```bash
+npm run build
+```
+
+### 4. Linter Validation
+Check code styling, type safety, and framework conventions:
+```bash
+npm run lint
+```

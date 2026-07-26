@@ -1,0 +1,8 @@
+{
+  "name": "Expense Vault",
+  "description": "A high-performance personal finance tracking application styled under Neo-brutalism design, featuring rollover budget metrics and dynamic server-based Gemini AI spending assessments.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

@@ -1,0 +1,94 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Global Safety Net (First pillar)
+    match /{document=**} {
+      allow read, write: if false;
+    }
+    
+    // Helper primitives
+    function isSignedIn() {
+      return request.auth != null;
+    }
+    
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+    
+    function incoming() {
+      return request.resource.data;
+    }
+    
+    function existing() {
+      return resource.data;
+    }
+
+    // Type and range validators for Expense schema matching
+    function isValidExpense(data) {
+      return data.user is string &&
+             data.user.size() <= 128 &&
+             data.category is string &&
+             data.category.size() <= 100 &&
+             data.description is string &&
+             data.description.size() <= 500 &&
+             data.amount is number &&
+             data.date is string &&
+             data.date.size() <= 32;
+    }
+
+    // Type and range validators for Budget schema matching
+    function isValidBudget(data) {
+      return data.user is string &&
+             data.user.size() <= 128 &&
+             data.category is string &&
+             data.category.size() <= 100 &&
+             data.limit is number &&
+             (!data.keys().hasAny(['rolloverEnabled']) || data.rolloverEnabled is bool);
+    }
+
+    // Match rules for expenses
+    match /expenses/{expenseId} {
+      // Direct access allowed only for the resource creator
+      allow get: if isSignedIn() && existing().user == request.auth.uid;
+      allow list: if isSignedIn() && existing().user == request.auth.uid;
+      
+      allow create: if isSignedIn() && 
+                    isValidId(expenseId) && 
+                    incoming().user == request.auth.uid && 
+                    isValidExpense(incoming());
+                    
+      allow update: if isSignedIn() && 
+                    isValidId(expenseId) && 
+                    existing().user == request.auth.uid && 
+                    incoming().user == request.auth.uid && 
+                    isValidExpense(incoming());
+                    
+      allow delete: if isSignedIn() && 
+                    isValidId(expenseId) && 
+                    existing().user == request.auth.uid;
+    }
+
+    // Match rules for budgets
+    match /budgets/{budgetId} {
+      // Direct access allowed only for the resource creator
+      allow get: if isSignedIn() && existing().user == request.auth.uid;
+      allow list: if isSignedIn() && existing().user == request.auth.uid;
+      
+      allow create: if isSignedIn() && 
+                    isValidId(budgetId) && 
+                    incoming().user == request.auth.uid && 
+                    isValidBudget(incoming());
+                    
+      allow update: if isSignedIn() && 
+                    isValidId(budgetId) && 
+                    existing().user == request.auth.uid && 
+                    incoming().user == request.auth.uid && 
+                    isValidBudget(incoming());
+                    
+      allow delete: if isSignedIn() && 
+                    isValidId(budgetId) && 
+                    existing().user == request.auth.uid;
+    }
+  }
+}
